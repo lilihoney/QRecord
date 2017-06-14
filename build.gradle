@@ -1,0 +1,167 @@
+import javax.imageio.spi.ServiceRegistry
+import javax.xml.bind.JAXBElement
+
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.3'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+
+
+
+task testQuotes{
+    doLast{
+        def singleQuote = 'I am single quotes'
+        def doubleQuote = "I am double quote"
+//        def os = 'modify ${singleQuote}'    //单引号是java.lang.String类型的，不支持占位符
+        def od = "modify ${doubleQuote}"
+        def od2 = "modify $doubleQuote"       //双引号是groovy.lang.GString类型的，用 $ 或 ${} 支持占位符
+
+//        assert os == 'modify I am single quotes '
+        assert od == "modify I am double quote"
+        assert od2 == "modify I am double quote"
+
+        assert singleQuote.toString() == 'I am single quotes'  //OK
+        assert doubleQuote.toString() == 'I am double quote'   //OK
+//        println "$singleQuote.toString()"  //Caused by: groovy.lang.MissingPropertyException
+//        println "$doubleQuote.toString()"  //Caused by: groovy.lang.MissingPropertyException
+
+        def person = [name:'lili',age:20]
+        println "$person.age"  //OK
+        //$只对A.B等有效，对A.C()等带括号的调用无效，因为Groovy认为去寻找C的名为toString的属性，所以异常
+
+    }
+}
+
+//Groovy grammar test
+task GStringTest{
+    doLast{
+        int n = 5
+        def s = "say hello to you"
+        def test1 = "s = ${s} , n = ${n}"
+        def test2 = "s = ${-> s} , n = ${-> n}"  //通过这种闭包的形式，可以拖延计算表达式
+        n++
+        s = "overwrite"
+        assert test1 == "s = say hello to you , n = 5" //ok---急切地计算，一创建时就求值
+        assert test2 == "s = overwrite , n = 6" //ok---拖延式计算，考虑新值
+
+
+        //可以使用\连使多行连续在同一行显示，也可以用"""  """
+        println "you are so smart, i want to \
+make friends with you!"
+
+        //Groovy中''与""的区别
+        //''用于创建没有插入变量的java字符串-----------创建字符串常量优先使用''
+        //""既能创建没有插入变量的java字符串，也能在有插值变量时创建GString
+    }
+}
+
+task copyTest1(type:org.gradle.api.tasks.Copy){
+    println 'copyTest1'
+    //该doLast为AbstractTask.java中的方法
+    doLast{
+
+    }
+
+}
+
+
+
+def JARJAR_FILE_PATH = "${project.rootDir}/libs/jarjar-1.4.jar"
+task originTest{
+    //该doLast为Task.java接口中的方法
+    doLast{
+
+        //@return {@link WorkResult} that can be used to check if the copy did any work.
+        copy{
+            from 'app/src'
+            into 'test'
+        }
+
+        //@return the result of the execution
+        //Executes a Java main class. The closure configures a {@link org.gradle.process.JavaExecSpec}.
+        javaexec{
+            println 'javaExec in doLast'
+            setClasspath(files(JARJAR_FILE_PATH))
+            setMain('com.tonicsystems.jarjar.Main')
+            setArgs(["process", "${project.rootDir}/libs/rule-card" + ".txt", "test/classes-clean.jar",  "test" + "/common-card" + ".jar"])
+        }
+
+        //jar方法不在Project中
+//        jar{
+//            setBaseName('classes-haha')
+//            setDestinationDir('test/testJar')
+//            form(zipTree('test/classes-clean.jar')).exclude("com/sensetime/senseid/sdk/common/BuildConfig.class")
+//        }
+    }
+}
+//doLast{}是一个task，这个task在一个｛｝闭包中，上述originTest的创建方式相当于 task name{}
+
+/*task javaexecTest(type: JavaExec){    //public interface JavaExecSpec extends JavaForkOptions, BaseExecSpec
+//    doLast{
+        classpath = files(JARJAR_FILE_PATH)
+        main = 'com.tonicsystems.jarjar.Main'
+        args = ["process", "${project.rootDir}/libs/rule-" + ".txt", AAR_FILES_TEMP_DIR + "/classes-clean.jar",  AAR_FILES_TEMP_DIR + "/common-" + ".jar"]
+//    }
+}*/
+
+//从上述例子中可见两种方式下用的javaExec是不同的，前者是org.gradle.process.JavaExecSpec接口；后者是JavaExec类
+
+//Gradle Task依赖
+
+task hello{
+    println 'configuration phase say hello'
+    doLast{
+        println "I want to say hello"
+    }
+}
+
+
+task exampleTask{
+    println "configuration can run anytime"
+    doLast{
+        println "execute exampleTask print " + paramsName
+    }
+}
+
+task reUsetask(dependsOn: exampleTask){
+    doLast{
+        helloTask = task(type: exampleTask)
+    }
+}
+
+task firstTask{
+    println 'first task configuration phase'
+    doLast{
+        println 'first task execution phase'
+    }
+}
+
+task secondTask{
+    println 'second task confituration phase'
+    doLast{
+        println 'second task execution phase'
+    }
+}
+
+secondTask.dependsOn firstTask
+

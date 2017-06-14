@@ -1,0 +1,1 @@
+rule com.sensetime.senseid.sdk.common.** com.sensetime.senseid.sdk.onemachine.common.@1

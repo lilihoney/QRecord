@@ -1,0 +1,2 @@
+rule com.sensetime.senseid.sdk.common.liveness.** com.sensetime.senseid.sdk.liveness.silent.@1
+rule com.sensetime.senseid.sdk.liveness.common.** com.sensetime.senseid.sdk.liveness.silent.common.@1
