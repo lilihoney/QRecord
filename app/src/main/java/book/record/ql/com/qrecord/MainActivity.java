@@ -31,11 +31,11 @@ public class MainActivity extends Activity {
         tvAllNames = (TextView)findViewById(R.id.tv_play_files_name);
         btnCreateFile = (Button)findViewById(R.id.btn_create_file);
         img_picture = (ImageView)findViewById(R.id.imageView);
-        setImagePicture(ROOT_PATH + "/sensetime/0.jpg");
+        setImagePicture(ROOT_PATH + "/imagetest/0.jpg");
 
 
-        List<String> oriFiles = FileUtils.getFilesName(ROOT_PATH + "/sensetime/");
-        tvAllNames.setText(ROOT_PATH +"/senstime\n"+getAllFilesName(oriFiles));
+        List<String> oriFiles = FileUtils.getFilesName(ROOT_PATH + "/imagetest/");
+        tvAllNames.setText(ROOT_PATH +"/imagetest\n"+getAllFilesName(oriFiles));
 
         btnCreateFile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +47,7 @@ public class MainActivity extends Activity {
                 List<String> afterFiles = FileUtils.getFilesName(Environment.getExternalStorageDirectory().getPath());
                 tvAllNames.setText(QR_FILE_PATH + "\n" +getAllFilesName(afterFiles));
                 btnCreateFile.setEnabled(false);*/
-                setImagePicture(ROOT_PATH + "/sensetime/cut.jpg");
+                setImagePicture(ROOT_PATH + "/imagetest/cut.jpg");
             }
         });
 
