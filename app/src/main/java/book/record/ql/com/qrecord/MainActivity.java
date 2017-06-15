@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.lang.annotation.AnnotationFormatError;
+import java.util.ArrayList;
 import java.util.List;
 
 import book.record.ql.com.utils.FileUtils;
@@ -31,12 +32,11 @@ public class MainActivity extends Activity {
         tvAllNames = (TextView)findViewById(R.id.tv_play_files_name);
         btnCreateFile = (Button)findViewById(R.id.btn_create_file);
         img_picture = (ImageView)findViewById(R.id.imageView);
-        setImagePicture(ROOT_PATH + "/imagetest/0.jpg");
-
 
         List<String> oriFiles = FileUtils.getFilesName(ROOT_PATH + "/imagetest/");
         tvAllNames.setText(ROOT_PATH +"/imagetest\n"+getAllFilesName(oriFiles));
 
+        int i = 0;
         btnCreateFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,4 +69,5 @@ public class MainActivity extends Activity {
         Bitmap bm = BitmapFactory.decodeFile(filePath,options);
         img_picture.setImageBitmap(bm);
     }
+
 }
