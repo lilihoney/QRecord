@@ -1,1 +1,1 @@
-include ':app', ':cameraandpicture', ':originalpractice'
+include ':app', ':camera_and_picture', ':originalpractice'

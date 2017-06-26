@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">OriginalPractice</string>
+    <string name="new_progress_bar">NewProgressBarActiity</string>
 </resources>
