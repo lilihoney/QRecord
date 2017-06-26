@@ -5,22 +5,27 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.BoringLayout;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.File;
-import java.lang.annotation.AnnotationFormatError;
-import java.util.ArrayList;
 import java.util.List;
 
+import book.record.ql.com.utils.DisplayUtil;
 import book.record.ql.com.utils.FileUtils;
+
+import static android.R.attr.x;
+import static android.os.Build.VERSION_CODES.M;
 
 public class MainActivity extends Activity {
     private final static String ROOT_PATH = Environment.getExternalStorageDirectory().getPath();
     private final static String QR_FILE_PATH = ROOT_PATH + "/qllrecord/";
-    private TextView tvAllNames;
+    private TextView tvAllNames,tvScreen;
     private Button btnCreateFile;
     private ImageView img_picture;
 
@@ -51,6 +56,26 @@ public class MainActivity extends Activity {
             }
         });
 
+
+        tvScreen = (TextView)findViewById(R.id.tv_screen);
+        // tvScreen.getTextSize()返回的是pixels
+        tvScreen.setTextSize(18);
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        Display display = getWindowManager().getDefaultDisplay();
+
+        StringBuffer screenBuffer = new StringBuffer();
+        screenBuffer.append("density = "+ dm.density+"\n"
+                +"densityDpi = " + dm.densityDpi + "\n widthPixels = "+ dm.widthPixels
+                +"\n heightPixels = " + dm.heightPixels
+                + "\n xdpi = " + dm.xdpi + "\n ydpi = " + dm.ydpi
+                + "\n scaledDensity = " + dm.scaledDensity
+                + "\n screenWidth = " + display.getWidth()
+                + "\n screenHeight = " + display.getHeight()
+                + "\n xdp = " + DisplayUtil.pxToDp(this,dm.xdpi)
+                + "\n ydp = " + DisplayUtil.pxToDp(this,dm.xdpi)
+                + "\n text size is = " +tvScreen.getTextSize()
+                + "\n text px to sp = " + DisplayUtil.pxToSp(this,tvScreen.getTextSize()));
+        tvScreen.setText(screenBuffer.toString());
 
     }
 
