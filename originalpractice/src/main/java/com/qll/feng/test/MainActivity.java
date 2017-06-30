@@ -24,7 +24,8 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
 public class MainActivity extends AppCompatActivity {
     private ListView targetList = null;
     private static final TargetDemo[] targetDemos = new TargetDemo[]{
-            new TargetDemo("NewProgressBarActivity",R.string.new_progress_bar,NewProgressBarActivity.class)
+            new TargetDemo("NewProgressBarActivity",R.string.new_progress_bar,NewProgressBarActivity.class),
+            new TargetDemo("ImageViewActivity",R.string.image_view_test,ImageViewActivity.class)
     };
 
 

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">OriginalPractice</string>
     <string name="new_progress_bar">NewProgressBarActiity</string>
+    <string name="image_view_test">ImageView 的使用</string>
 </resources>
