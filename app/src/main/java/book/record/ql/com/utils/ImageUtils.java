@@ -14,6 +14,11 @@ import java.io.OutputStream;
  */
 
 public final class ImageUtils {
+
+    public static Bitmap rgba2Bitmap(int[] rgba, int width, int height){
+        return Bitmap.createBitmap(rgba, width, height, Bitmap.Config.ARGB_8888);
+    }
+
     public static Bitmap byteToBitmap(byte[] imageData){
         return BitmapFactory.decodeByteArray(imageData, 0 ,imageData.length);
     }
